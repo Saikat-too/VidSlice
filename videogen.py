@@ -4,16 +4,15 @@ import cv2
 
 
 def vid_play():
-    vid_capture = cv2.VideoCapture("test.mkv")
+    vid_capture = cv2.VideoCapture("test2.mp4")
 
     if not vid_capture.isOpened():
         print("Error Opening The File")
 
     else:
-        fps = vid_capture.get(5)
+        fps = vid_capture.get(cv2.CAP_PROP_FPS)
         print("Frame Per  Second : ", fps, "FPS")
-
-        frame_count = vid_capture.get(7)
+        frame_count = vid_capture.get(cv2.CAP_PROP_FRAME_COUNT)
         print("Frame Count : ", frame_count)
 
         while vid_capture.isOpened():
@@ -26,8 +25,8 @@ def vid_play():
                 if key == ord("q"):
                     break
 
-                else:
-                    break
+            else:
+                break
 
     vid_capture.release()
     cv2.destroyAllWindows()
