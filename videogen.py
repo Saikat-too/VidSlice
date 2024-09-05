@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-from types import FrameType
 import cv2
 import numpy as np
 import tkinter as tk
@@ -8,12 +7,13 @@ from PIL import Image, ImageTk
 
 
 class Video:
-    def __init__(self, window, window_title, window_height, window_width):
+    def __init__(self, window, window_title):
+        self.vid_capture = cv2.VideoCapture("test.mkv")
         self.window = window
         self.window.title(window_title)
-        self.window_height = window_height
-        self.window_width = window_width
+        self.window_height = self.vid_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
 
+        self.window_width = self.vid_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
         self.screenheight = window.winfo_screenheight()
         self.screenwidth = window.winfo_screenwidth()
 
@@ -26,14 +26,12 @@ class Video:
         self.window.geometry(self.alignstr)
 
         self.canvas = tk.Canvas(
-            window, width=self.window_width - 160, height=self.window_height - 120
+            window, width=self.window_width, height=self.window_height
         )
 
         self.canvas.pack()
 
         self.photo = None
-
-        self.vid_capture = cv2.VideoCapture("test.mkv")
 
         if not self.vid_capture:
             print("Error Opening The File")
@@ -63,5 +61,5 @@ class Video:
 
 if __name__ == "__main__":
     window = tk.Tk()
-    app = Video(window, "Anime Watch", 600, 800)
+    app = Video(window, "Anime Watch")
     window.mainloop()
