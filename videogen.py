@@ -33,37 +33,31 @@ class Video:
 
         self.photo = None
 
-    def vid_play(self):
-        vid_capture = cv2.VideoCapture("test.mkv")
+        self.vid_capture = cv2.VideoCapture("test.mkv")
 
-        if not vid_capture.isOpened():
+        if not self.vid_capture:
             print("Error Opening The File")
 
+        self.vid_play()
+
+    def vid_play(self):
+        ret, frame = self.vid_capture.read()
+        if ret:
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2BGRA)
+            self.photo = ImageTk.PhotoImage(image=Image.fromarray(frame))
+            self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
+            current_frame = np.asarray(frame)
+            print(current_frame)
+
+            self.window.after(30, self.vid_play)
+
         else:
-            fps = vid_capture.get(cv2.CAP_PROP_FPS)
-            print("Frame Per  Second : ", fps, "FPS")
-            frame_count = vid_capture.get(cv2.CAP_PROP_FRAME_COUNT)
-            print("Frame Count : ", frame_count)
+            self.vid_capture.release()
 
-            while vid_capture.isOpened():
-                ret, frame = vid_capture.read()
-                print(FrameType)
-                if ret:
-                    frame = cv2.cvtColor(frame, cv2.COLOR_BGR2BGRA)
-                    self.photo = ImageTk.PhotoImage(image=Image.fromarray(frame))
-                    self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
-                    current_frame = np.asarray(frame)
-                    print(current_frame)
+    def __del__(self):
+        if self.vid_capture.isOpened():
+            self.vid_capture.release()
 
-                    key = cv2.waitKey(20)
-
-                    if key == ord("q"):
-                        break
-
-                else:
-                    break
-
-        vid_capture.release()
         cv2.destroyAllWindows()
 
 
