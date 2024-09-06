@@ -8,12 +8,12 @@ from PIL import Image, ImageTk
 
 class Video:
     def __init__(self, window, window_title):
-        self.vid_capture = cv2.VideoCapture("test.mkv")
+        self.vid_capture = cv2.VideoCapture("Sasuke.mp4")
         self.window = window
         self.window.title(window_title)
-        self.window_height = self.vid_capture.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        self.window_height = 1080
 
-        self.window_width = self.vid_capture.get(cv2.CAP_PROP_FRAME_WIDTH)
+        self.window_width = 1920
         self.screenheight = window.winfo_screenheight()
         self.screenwidth = window.winfo_screenwidth()
 
@@ -41,6 +41,7 @@ class Video:
     def vid_play(self):
         ret, frame = self.vid_capture.read()
         if ret:
+            frame = cv2.resize(frame, (1920, 1080))
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2BGRA)
             self.photo = ImageTk.PhotoImage(image=Image.fromarray(frame))
             self.canvas.create_image(0, 0, image=self.photo, anchor=tk.NW)
