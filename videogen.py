@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+import sys
 import cv2
 import numpy as np
 import tkinter as tk
@@ -40,6 +40,7 @@ class Video:
 
     def vid_play(self):
         ret, frame = self.vid_capture.read()
+
         if ret:
             frame = cv2.resize(frame, (1920, 1080))
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2BGRA)
